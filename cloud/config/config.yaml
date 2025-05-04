@@ -1,0 +1,18 @@
+port: 8080
+backends:
+  - url: "http://backend1:8080"
+    healthy: true
+  - url: "http://backend2:8080"
+    healthy: true
+
+rate_limiter:
+  default_capacity: 100
+  default_rate: 10
+  refill_interval: 1s
+  client_specific:
+    "192.168.1.1":
+      capacity: 200
+      rate: 20
+    "10.0.0.5":
+      capacity: 50
+      rate: 5

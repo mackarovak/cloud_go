@@ -1,0 +1,4 @@
+.git
+*.md
+bin/
+test_servers/

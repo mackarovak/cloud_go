@@ -1,0 +1,38 @@
+services:
+  load-balancer:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    build: .
+    ports:
+      - "8088:8080"
+    depends_on:
+      - backend1
+      - backend2
+
+  backend1:
+    image: nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - ./test_servers/server1:/usr/share/nginx/html:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  backend2:
+    image: nginx
+    ports:
+      - "8082:80"
+    volumes:
+      - ./test_servers/server2:/usr/share/nginx/html:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
